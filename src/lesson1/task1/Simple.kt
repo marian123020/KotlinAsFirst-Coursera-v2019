@@ -54,7 +54,7 @@ fun main() {
     //println("Root product: $x1x2")
     val first = numberRevert(410)
     println("Root product: $first")
-}○
+}
 
 /**
  * Тривиальная
