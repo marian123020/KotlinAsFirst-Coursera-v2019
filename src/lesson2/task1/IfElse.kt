@@ -66,12 +66,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     var result = ""
-    if (age > 0 && age < 100) {
+    if (age in 1..99) {
         if (age == 11 || age == 12 || age == 13 || age == 14) {
             result = "$age лет"
         } else if (age == 1 || (age % 10) == 1) {
             result = "$age год"
-        } else if (age > 1 && age < 6 || (age % 10) > 1 && (age % 10 < 6)) {
+        } else if (age in 2..4 || (age % 10) > 1 && (age % 10) < 5) {
             result = "$age года"
         } else {
             result = "$age лет"
@@ -81,8 +81,6 @@ fun ageDescription(age: Int): String {
             result = "$age лет"
         else if (((age % 100) % 10) == 1)
             result = "$age год"
-        else if (((age % 100) % 10) > 1 && ((age % 100) % 10) < 6)
-            result = "$age года"
         else
             result = "$age лет"
     }
@@ -110,14 +108,14 @@ fun timeForHalfWay(
         time += S / v1.toDouble();
         S = 0.0
     }
-    if ((S - t2 * v2) > 0.0) {
+    if ((S - t2 * v2) >= 0.0) {
         S -= t2 * v2;
         time += t2.toDouble();
-    } else if ((S - t2 * v2) < 0.0) {
+    } else if ((S - t2 * v2) < 0.0 && v3 == 0.0) {
         time += S / v2.toDouble();
         S = 0.0
     }
-    if ((S - v3 * t3) > 0.0) {
+    if ((S - v3 * t3) >= 0.0 && v3 != 0.0) {
         S -= t3 * v3;
         time += t3.toDouble();
     } else if ((S - t3 * v3) < 0.0) {
@@ -203,14 +201,16 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     var a1 = 0.0
     var b1 = 0.0
     var c1 = 0.0
-    if (a > c) {
-        a1 = c
-        b1 = b
-        c1 = a
-    } else if (b > c) {
-        a1 = a
-        b1 = c
-        c1 = b
+    if (a > c || b > c) {
+        if (b > c && a < b) {
+            a1 = a
+            b1 = c
+            c1 = b
+        } else {
+            a1 = c
+            b1 = b
+            c1 = a
+        }
     } else {
         a1 = a
         b1 = b
@@ -240,33 +240,21 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     var result = 0
-    if(a < c && b < d)
-    {
+    if (a < c && b < d) {
         result = b - c
-    }
-    else if(a > c && b > d)
-    {
+    } else if (a > c && b > d) {
         result = d - a
-    }
-    else if(c < a && b < d)
-    {
+    } else if (c < a && b < d) {
         result = b - a
-    }
-    else if(a < c && b > d)
-    {
+    } else if (a < c && b > d) {
         result = d - c
+    } else if (a == c && b > a && d > a) {
+        result = min(abs(b - a), abs(d - a))
+    } else if (d == b && a < b && c < b) {
+        result = min(abs(a - b), abs(c - b))
     }
-    else if (a == c && b > a && d > a)
-    {
-        result = min(abs(b-a), abs(d - a))
-    }
-    else if (d == b && a > b && c > b)
-    {
-        result = min(abs(a-b), abs(c - b))
-    }
-    if (result < 0)
-    {
+    if (result < 0) {
         result = -1
     }
-  return result
+    return result
 }

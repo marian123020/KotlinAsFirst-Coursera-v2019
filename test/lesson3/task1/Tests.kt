@@ -66,6 +66,8 @@ class Tests {
     @Tag("Easy")
     fun digitNumber() {
         assertEquals(1, digitNumber(0))
+        assertEquals(1, digitNumber(-2))
+        assertEquals(2, digitNumber(-12))
         assertEquals(1, digitNumber(7))
         assertEquals(2, digitNumber(10))
         assertEquals(2, digitNumber(99))
@@ -119,6 +121,7 @@ class Tests {
     @Test
     @Tag("Easy")
     fun maxDivisor() {
+        assertEquals(1, maxDivisor(2))
         assertEquals(1, maxDivisor(17))
         assertEquals(12, maxDivisor(24))
         assertEquals(59, maxDivisor(177))
@@ -174,6 +177,8 @@ class Tests {
     @Tag("Normal")
     fun sin() {
         assertEquals(0.0, sin(0.0, 1e-5), 1e-5)
+        assertEquals(0.0, sin(-PI, 1e-5), 1e-5)
+        assertEquals(0.0, sin(-18.84955592153876, 1.0E-10), 1e-5)
         assertEquals(1.0, sin(PI / 2.0, 1e-5), 1e-5)
         assertEquals(0.0, sin(PI, 1e-5), 1e-5)
         assertEquals(-1.0, sin(3.0 * PI / 2.0, 1e-5), 1e-5)
@@ -234,6 +239,7 @@ class Tests {
         assertEquals(6, squareSequenceDigit(12))
         assertEquals(0, squareSequenceDigit(17))
         assertEquals(9, squareSequenceDigit(27))
+        assertEquals(3, squareSequenceDigit(247))
     }
 
     @Test
