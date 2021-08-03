@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.numberRevert
 import kotlin.math.sqrt
 
 /**
@@ -115,14 +116,29 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var result = 0.0
+    for (x in v.indices) {
+        result += v[x] * v[x]
+    }
+    return sqrt(result)
+}
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double {
+    var result = 0.0
+    for (x in list.indices) {
+        result += list[x]
+    }
+    if (list.isNotEmpty()) {
+        result /= list.size
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -132,7 +148,19 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    var result = 0.0
+    for (i in 0 until list.size) {
+        result += list[i]
+    }
+    if (list.size != 0) {
+        result /= list.size
+    }
+    for (i in 0 until list.size) {
+        list[i] -= result
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -141,7 +169,13 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var result = 0
+    for (i in a.indices) {
+        result += a[i] * b[i]
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -151,7 +185,18 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var result = 0
+    if (p.isNotEmpty()) {
+        result = p[0]
+    }
+    var y = x
+    for (i in 1 until p.size) {
+        result += p[i] * y
+        y *= x
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -163,7 +208,12 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    for (i in 0..list.size - 2) {
+        list[i + 1] += list[i]
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -172,7 +222,23 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var result = mutableListOf<Int>()
+    var temp = n
+    while (temp > 1) {
+        for (i in 2..n) {
+            if (temp == 1) {
+                break
+            }
+            if (temp % i == 0) {
+                result.add(i)
+                temp /= i
+                break
+            }
+        }
+    }
+    return result.toList()
+}
 
 /**
  * Сложная
@@ -181,7 +247,7 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -190,7 +256,22 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var count = 1
+    var copy_n = n
+    while (copy_n > (base - 1)) {
+        count++
+        copy_n /= base
+    }
+    var list = mutableListOf<Int>()
+    copy_n = n
+    for (i in count - 1 downTo 0 step 1) {
+        list.add(copy_n % base)
+        copy_n /= base
+    }
+    list.reverse()
+    return list.toList()
+}
 
 /**
  * Сложная
@@ -203,7 +284,20 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var list = convert(n, base).toMutableList()
+    var result = ""
+    for (i in 0 until list.size) {
+        if (list[i] in 0..9) {
+            result += list[i]
+        } else {
+            var a: Char = 'a';
+            a += (list[i] - 10)
+            result += a
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -212,7 +306,7 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int = polynom(digits.reversed(), base)
 
 /**
  * Сложная
@@ -226,7 +320,17 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var list = mutableListOf<Int>()
+    for (i in 0 until str.length) {
+        if (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9') {
+            list.add(str[i].toInt() - 48)
+        } else {
+            list.add(str[i].toInt() - 'a'.toInt() + 10)
+        }
+    }
+    return decimal(list, base)
+}
 
 /**
  * Сложная
@@ -236,7 +340,24 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var n1 = n
+    var numlist = listOf<Int>(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
+    var symlist = listOf<String>("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
+    var i = 12
+    var result = ""
+    while (n1 > 0) {
+        var div: Int = n1 / numlist[i]
+        n1 %= numlist[i]
+        div--
+        while (div >= 0) {
+            result += symlist[i]
+            div--
+        }
+        i--
+    }
+    return result
+}
 
 /**
  * Очень сложная
@@ -245,4 +366,127 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var ot0do10 = listOf<String>("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    var ot10do100 = listOf<String>(
+        "",
+        "десять",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    var ot100do1000 = listOf<String>(
+        "",
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    var ot1000do10000 = listOf<String>("", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    var ot10000do100000 = listOf<String>(
+        "",
+        "десять",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    var ot100000do1000000 = listOf<String>(
+        "",
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    var termination =
+        listOf<String>("тысяч", "тысяча", "тысячи", "тысячи", "тысячи", "тысяч", "тысяч", "тысяч", "тысяч", "тысяч")
+    var dec = listOf<String>(
+        "десять",
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
+    )
+    var result = ""
+    var numberlist = mutableListOf<Int>()
+    var temp = n
+    while (temp > 0) {
+        numberlist.add(temp % 10)
+        temp /= 10
+
+    }
+    var firstbool = false
+    var secondbool = false
+    for (i in numberlist.size downTo 1 step 1) {
+        if (i == 3 && numberlist.size > 3) {
+            if (firstbool) {
+                result += termination[0]
+            } else {
+                result += termination[numberlist[i]]
+            }
+            result += " "
+        }
+        if (i == 6) {
+            result += ot100000do1000000[numberlist[i - 1]]
+            result += " "
+        } else if (i == 5) {
+            if (numberlist[i - 1] == 1) {
+                result += dec[numberlist[i - 2]]
+                result += " "
+                firstbool = true
+            } else {
+                result += ot10000do100000[numberlist[i - 1]]
+                result += " "
+            }
+        } else if (i == 4 && !firstbool) {
+            result += ot1000do10000[numberlist[i - 1]]
+            result += " "
+        } else if (i == 3) {
+            result += ot100do1000[numberlist[i - 1]]
+            result += " "
+        } else if (i == 2) {
+            if (numberlist[i - 1] == 1) {
+                result += dec[numberlist[i - 2]]
+                result += " "
+                secondbool = true
+            } else {
+                result += ot10do100[numberlist[i - 1]]
+                result += " "
+            }
+        } else if (i == 1 && !secondbool) {
+            result += ot0do10[numberlist[i - 1]]
+            result += " "
+        }
+        if (result[result.length - 1] == ' ' && result[result.length - 2] == ' ') {
+            result = result.substring(0, result.length - 1);
+        }
+    }
+    if (result[result.length - 1] == ' ') {
+        result = result.substring(0, result.length - 1);
+    }
+    return result
+}

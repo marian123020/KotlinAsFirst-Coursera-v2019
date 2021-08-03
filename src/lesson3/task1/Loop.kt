@@ -328,7 +328,7 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var result = 0
     var count = 0
-    for (a in 1..100) {
+    for (a in 1..1000000) {
         var number = a * a
         var count1 = 0
         var temp = number
@@ -362,6 +362,10 @@ fun squareSequenceDigit(n: Int): Int {
             if (count == n) {
                 return number
             }
+        }
+        if(count >= n)
+        {
+            break
         }
     }
     return result

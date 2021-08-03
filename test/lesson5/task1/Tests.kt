@@ -121,6 +121,7 @@ class Tests {
     @Test
     @Tag("Easy")
     fun containsIn() {
+        //assertTrue(containsIn(mapOf("a" to "a", "t" to "b"), mapOf("a" to "z", "b" to "sweet", "t" to "b")))
         assertTrue(containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")))
         assertFalse(containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")))
     }
@@ -297,6 +298,14 @@ class Tests {
     @Test
     @Tag("Hard")
     fun findSumOfTwo() {
+        assertEquals(
+            Pair(0, 1),
+            findSumOfTwo(listOf(0,0), 0)
+        )
+        assertEquals(
+            Pair(-1, -1),
+            findSumOfTwo(listOf(0), 0)
+        )
         assertEquals(
             Pair(-1, -1),
             findSumOfTwo(emptyList(), 1)

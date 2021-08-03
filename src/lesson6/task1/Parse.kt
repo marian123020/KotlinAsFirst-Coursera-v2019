@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import lesson7.task1.countSubstrings
+import java.lang.NumberFormatException
+
 /**
  * Пример
  *
@@ -69,7 +72,79 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    var result: String = ""
+    var year: Int = -1
+    var month: Int = -1
+    var day: Int = -1
+    try {
+        var Febuary: Int
+        var datee = str.split(" ")
+        var monthh = listOf<String>(
+            "января",
+            "февраля",
+            "марта",
+            "апреля",
+            "мая",
+            "июня",
+            "июля",
+            "августа",
+            "сентября",
+            "октября",
+            "ноября",
+            "декабря"
+        )
+        if (datee.size != 3) {
+            return ""
+        } else {
+            var date = datee.reversed()
+            if (date[0].toInt() >= 0 || (date[1].toInt() in 1..12) || (date[2].toInt() in 1..31)) {
+                year = date[0].toInt()
+                if ((date[0].toInt() % 400) == 0) {
+                    Febuary = 29
+                } else if ((date[0].toInt() % 100) == 0) {
+                    Febuary = 28
+                } else if (date[0].toInt() % 4 == 0) {
+                    Febuary = 29
+                } else {
+                    Febuary = 28
+                }
+                for (list in monthh.indices) {
+                    if (monthh[list] == date[1]) {
+                        month = list + 1
+                    }
+                }
+                if (month == -1) {
+                    return ""
+                }
+                if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                    if (date[2].toInt() <= 31) {
+                        day = date[2].toInt()
+                    } else {
+                        return ""
+                    }
+                } else {
+                    if (month == 2) {
+                        if (date[2].toInt() <= Febuary) {
+                            day = date[2].toInt()
+                        } else {
+                            return ""
+                        }
+                    } else {
+                        if (date[2].toInt() <= 30) {
+                            day = date[2].toInt()
+                        } else {
+                            return ""
+                        }
+                    }
+                }
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return String.format("%02d.%02d.%d", day, month, year)
+}
 
 /**
  * Средняя
@@ -81,7 +156,73 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    var datee = digital.split(".")
+    var year: Int
+    var month: String
+    var day: Int
+    try {
+        if (datee.size != 3) {
+            return ""
+        } else {
+            var monthh = listOf<String>(
+                "января",
+                "февраля",
+                "марта",
+                "апреля",
+                "мая",
+                "июня",
+                "июля",
+                "августа",
+                "сентября",
+                "октября",
+                "ноября",
+                "декабря"
+            )
+            var Febuary = 0
+            var date = datee.reversed()
+            if (date[0].toInt() >= 0 && (date[1].toInt() in 1..12) && (date[2].toInt() in 1..31)) {
+                year = date[0].toInt()
+                if ((date[0].toInt() % 400) == 0) {
+                    Febuary = 29
+                } else if ((date[0].toInt() % 100) == 0) {
+                    Febuary = 28
+                } else if (date[0].toInt() % 4 == 0) {
+                    Febuary = 29
+                } else {
+                    Febuary = 28
+                }
+                month = monthh[date[1].toInt() - 1]
+                if (date[1].toInt() == 1 || date[1].toInt() == 3 || date[1].toInt() == 5 || date[1].toInt() == 7 || date[1].toInt() == 8 || date[1].toInt() == 10 || date[1].toInt() == 12) {
+                    if (date[2].toInt() <= 31) {
+                        day = date[2].toInt()
+                    } else {
+                        return ""
+                    }
+                } else {
+                    if (date[1].toInt() == 2) {
+                        if (date[2].toInt() <= Febuary) {
+                            day = date[2].toInt()
+                        } else {
+                            return ""
+                        }
+                    } else {
+                        if (date[2].toInt() <= 30) {
+                            day = date[2].toInt()
+                        } else {
+                            return ""
+                        }
+                    }
+                }
+            } else {
+                return ""
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return "$day $month $year"
+}
 
 /**
  * Средняя
@@ -170,7 +311,38 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    var count = 0
+    for (i in roman.indices) {
+        if (roman[i] == 'M') {
+            count += 1000
+        } else if (roman[i] == 'D') {
+            count += 500
+        } else if (roman[i] == 'C') {
+            if (i + 1 < roman.length && (roman[i + 1] == 'D' || roman[i + 1] == 'M'))
+                count -= 100;
+            else
+                count += 100;
+        } else if (roman[i] == 'L') {
+            count += 50
+        } else if (roman[i] == 'X') {
+            if (i + 1 < roman.length && (roman[i + 1] == 'L' || roman[i + 1] == 'C' || roman[i + 1] == 'M'))
+                count -= 10;
+            else
+                count += 10;
+        } else if (roman[i] == 'V') {
+            count += 5
+        } else if (roman[i] == 'I') {
+            if (i + 1 < roman.length && (roman[i + 1] == 'V' || roman[i + 1] == 'X' || roman[i + 1] == 'C'))
+                count -= 1;
+            else
+                count += 1;
+        } else {
+            return -1
+        }
+    }
+    return count
+}
 
 /**
  * Очень сложная

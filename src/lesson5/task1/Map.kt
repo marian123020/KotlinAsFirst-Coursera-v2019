@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.*
+
 /**
  * Пример
  *
@@ -91,7 +93,16 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    var map = mutableMapOf<Int, MutableList<String>>()
+    for (i in grades) {
+        map[i.value] = mutableListOf<String>()
+    }
+    for (i in grades) {
+        map[i.value]?.add(i.key)
+    }
+    return map
+}
 
 /**
  * Простая
@@ -104,6 +115,22 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+/*{
+    var bool = false
+    for (i in a) {
+        if (bool) {
+            break
+        }
+        for (j in b) {
+            if (a[i.key] == b[j.key] && i.key == j.key) {
+                bool = true
+                break
+            }
+        }
+        break
+    }
+    return bool
+}*/
 
 /**
  * Простая
@@ -119,7 +146,17 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
+    for (i in b) {
+        for (j in a) {
+            if (b[i.key] == a[j.key] && i.key == j.key) {
+                a.remove(i.key)
+                break
+            }
+        }
+    }
+    return a
+}
 
 /**
  * Простая
@@ -147,7 +184,20 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    var map = mapA.toMutableMap()
+    for (b in mapB) {
+        if (map.containsKey(b.key)) {
+            if (map[b.key] != mapB[b.key]) {
+                var temp = map[b.key] + ", " + mapB[b.key]
+                map[b.key] = temp
+            }
+        } else {
+            map[b.key] = mapB[b.key].toString()
+        }
+    }
+    return map.toMap()
+}
 
 /**
  * Средняя
@@ -257,7 +307,25 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    var result: Pair<Int, Int> = -1 to -1
+    var bool = false
+    if (list.size != 1) {
+        for (i in list.indices) {
+            if (bool) {
+                break
+            }
+            for (j in list.indices) {
+                if (list[i] + list[j] == number && i != j) {
+                    result = min(i, j) to max(i, j)
+                    bool = true
+                    break
+                }
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Очень сложная
@@ -280,4 +348,31 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val result = mutableSetOf<String>()
+    val listOfMass = mutableListOf<Int>()
+    val listOfPrices = mutableListOf<Int>()
+    val listOfTreasures = mutableListOf<String>()
+    val prices = Array(treasures.size + 1) { Array(capacity + 1) { 0 } }
+    for ((key, value) in treasures) {
+        listOfPrices.add(value.second)
+        listOfMass.add(value.first)
+        listOfTreasures.add(key)
+    }
+    for (i in 1..treasures.size)
+        for (j in 0..capacity)
+            if (j >= listOfMass[i - 1])
+                prices[i][j] = max(prices[i - 1][j], prices[i - 1][j - listOfMass[i - 1]] + listOfPrices[i - 1])
+            else
+                prices[i][j] = prices[i - 1][j]
+    var temp = capacity
+    var i = treasures.size
+    while (i > 0) {
+        if (prices[i][temp] != prices[i - 1][temp]) {
+            result.add(listOfTreasures[i - 1])
+            temp -= listOfMass[i - 1]
+        }
+        i--
+    }
+    return result
+}
