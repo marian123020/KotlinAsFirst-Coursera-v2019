@@ -210,12 +210,13 @@ Basic, Ruby, Swift.
         )
         assertFileContent("temp.txt", "Zzdrавствуy,\nmyyr!!!")
         File("temp.txt").delete()
+
         transliterate(
-            "input/temp1.txt",
-            mapOf('n' to "?q启↿멭ﭘAw_"),
+            "input/temps.txt",
+            mapOf(' ' to "V"),
             "temp.txt"
         )
-        assertFileContent("temp.txt", "a?q启↿멭ﭘaw_")
+        assertFileContent("temp.txt", " v")
         File("temp.txt").delete()
     }
 

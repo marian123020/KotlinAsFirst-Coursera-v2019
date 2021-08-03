@@ -210,32 +210,29 @@ fun top20Words(inputName: String): Map<String, Int> {
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    var writer = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
+    /*var writer = File(outputName).bufferedWriter()
+    var dictionaryy = mutableMapOf<String, String>()
+    for (i in dictionary) {
+        var a: String = i.key.toString().toLowerCase()
+        var b: String = i.value.toLowerCase()
+        dictionaryy.put(a, b)
+    }
+    var file = File(inputName).readLines()
+    for (line in file) {
         for (i in line.indices) {
-            var bool = false
-            var b:String = line[i].toUpperCase().toString()
-            var a = dictionary.get(b)
-            if (dictionary.get(line[i].toLowerCase()) == line[i].toString()) {
-                var temp = dictionary.get(line[i]).toString().toLowerCase().decapitalize()
-                writer.write(temp)
-                bool = true
-                break
-            } else if (dictionary.get(line[i].toUpperCase()) == line[i].toString()) {
-                var temp = dictionary.get(line[i].toString()).toString().toLowerCase().capitalize()
-                writer.write(temp)
-                bool = true
-                break
-            }
-            if (!bool) {
+            var temp = dictionaryy.get(line[i].toString().toLowerCase())
+            if (line[i].toString() == line[i].toString().toLowerCase() && temp != null) {
+                writer.write(temp.decapitalize())
+            } else if (line[i].toString() == line[i].toString().toUpperCase() && temp != null) {
+                writer.write(temp.capitalize())
+            } else {
                 writer.write(line[i].toString())
             }
         }
-        if (line.length != 0) {
-            writer.newLine()
-        }
+        writer.newLine()
     }
-    writer.close()
+    writer.close()*/
+    TODO()
 }
 
 /**
@@ -263,6 +260,30 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
+    /*var writer = File(outputName).bufferedWriter()
+    var listpair: MutableList<Pair<String, Int>> = mutableListOf()
+    var max: Int = 0
+    for (line in File(inputName).readLines()) {
+        var b: MutableSet<String> = line.toLowerCase().split("").toSet() as MutableSet<String>
+        b.remove("")
+        if (line.length == b.size) {
+            listpair.add(line to b.size)
+            if (max < b.size) {
+                max = b.size
+            }
+        }
+    }
+    var result: String = ""
+    for (i in 0 until listpair.size) {
+        if (listpair[i].second == max) {
+            result += listpair[i].first + ", "
+        }
+    }
+    if (result.length>0) {
+        result = result.substring(0, result.length - 2)
+    }
+    writer.write(result)
+    writer.close()*/
     TODO()
 }
 
